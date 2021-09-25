@@ -1,9 +1,19 @@
 spreadsheet = SpreadsheetApp.openById('Id Sheet');
 sheet = spreadsheet.getSheetByName('Name Paper');
 lastRow = sheet.getLastRow()
+apiKey = 'Your Api Key'
 
 function output(response) {
   return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON)
+}
+
+function auth(apiKeyClient){
+    const response = {
+        data: "no permission"
+    }
+    if(apiKeyClient!=apiKey){
+        return output(response)
+    }
 }
 
 function doGet() {
@@ -18,6 +28,8 @@ function doGet() {
 
 function doPost(e) {
   const action = e.parameter.action
+  const apiKeyClient = e.parameter.apiKey
+  auth(apiKeyClient)
   if (action == 'addData') {
     return addData(e)
   } else if (action == 'deleteData') {
